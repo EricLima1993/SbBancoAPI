@@ -52,13 +52,12 @@ public class Cliente implements Serializable {
 		super();
 	}
 	
-	public Cliente(int id,String nome, String cpf, String senha, String tipo) {
+	public Cliente(String nome, String cpf, String senha) {
 		super();
-		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.senha = senha;
-		this.tipo = tipo;
+
 	}
 
 	public Cliente(String cpf, String senha) {

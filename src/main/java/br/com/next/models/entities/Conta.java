@@ -37,10 +37,9 @@ public class Conta implements Serializable{
 		super();
 	}
 
-	public Conta(int numConta,double saldo) {
+	public Conta(Cliente cli) {
 		super();
-		this.numeroConta = numConta;
-		this.saldo = saldo;
+		this.cliente = cli;
 	}
 
 	public int getNumeroConta() {
