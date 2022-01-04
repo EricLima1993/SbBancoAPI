@@ -24,5 +24,4 @@ public class ClienteController {
 		Cliente obj = cs.buscar(id);
 		return ResponseEntity.ok().body(obj);
 	}
-
 }

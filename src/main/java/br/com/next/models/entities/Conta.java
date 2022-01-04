@@ -1,20 +1,23 @@
 package br.com.next.models.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "TB_CONTA")
-public class Conta {
+public class Conta implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@Column(name = "NUMERO_CONTA")
@@ -26,18 +29,18 @@ public class Conta {
 	@Column(name = "SALDO")
 	private double saldo;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID", nullable = false)
+	@JsonBackReference
+	@OneToOne(mappedBy = "conta")
 	private Cliente cliente;
 	
 	public Conta() {
 		super();
 	}
 
-	public Conta(double saldo, Cliente cliente) {
+	public Conta(int numConta,double saldo) {
 		super();
+		this.numeroConta = numConta;
 		this.saldo = saldo;
-		this.cliente = cliente;
 	}
 
 	public int getNumeroConta() {
@@ -63,5 +66,5 @@ public class Conta {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
+
 }
