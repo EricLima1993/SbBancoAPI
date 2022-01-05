@@ -4,6 +4,8 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,7 +29,7 @@ public class ClienteController {
 	@Autowired
 	ContaService cons;
 
-	@PostMapping(path = "/buscar")
+	@GetMapping(path = "/buscar")
 	public ResponseEntity<?> buscar(@RequestParam int id) {
 		Cliente obj = cs.buscar(id);
 		return ResponseEntity.ok().body(obj);
@@ -38,7 +40,7 @@ public class ClienteController {
 		obj = cs.inserir(obj);
 		Conta con = new Conta(obj);
 		obj.setConta(con);
-		con = cons.insert(con);
+		con = cons.inserir(con);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
@@ -48,6 +50,14 @@ public class ClienteController {
 		obj.setId(id);
 		cs.atualizar(obj);
 		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping(path = "/cancelar/{id}")
+	public ResponseEntity<Void> deletar(@PathVariable int id) {
+		Cliente cli = cs.buscar(id);
+		cs.deletar(id);
+		cons.deletar(cli.getConta().getNumeroConta());
 		return ResponseEntity.noContent().build();
 	}
 }

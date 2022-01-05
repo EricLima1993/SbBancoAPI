@@ -2,8 +2,6 @@ package br.com.next.services;
 
 import java.util.Optional;
 
-import javax.management.Query;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,10 @@ public class ClienteService {
 	public Cliente atualizar(Cliente obj) {
 		buscar(obj.getId());
 		return cr.save(obj);
+	}
+	
+	public void deletar(Integer id) { 
+		cr.deleteById(id);
 	}
 	
 }
