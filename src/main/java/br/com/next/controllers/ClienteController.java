@@ -60,4 +60,10 @@ public class ClienteController {
 		cons.deletar(cli.getConta().getNumeroConta());
 		return ResponseEntity.noContent().build();
 	}
+	
+	@GetMapping(path = "/login")
+	public ResponseEntity<?> login(@RequestParam String cpf, String senha) {
+		Cliente obj = cs.logar(cpf, senha);
+		return ResponseEntity.ok().body(obj);
+	}
 }
