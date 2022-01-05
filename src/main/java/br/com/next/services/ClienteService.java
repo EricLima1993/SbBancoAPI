@@ -24,9 +24,14 @@ public class ClienteService {
 				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName())); 
 	}
 	
-	public Cliente insert(Cliente obj) {
+	public Cliente inserir(Cliente obj) {
 			obj.setTipo(TipoCliente.COMUM.toString());		
 			return cr.save(obj);	
+	}
+	
+	public Cliente atualizar(Cliente obj) {
+		buscar(obj.getId());
+		return cr.save(obj);
 	}
 	
 }

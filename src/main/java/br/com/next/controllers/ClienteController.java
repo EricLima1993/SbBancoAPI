@@ -4,7 +4,9 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,11 +35,19 @@ public class ClienteController {
 
 	@PostMapping(path = "/cadastrar")
 	public ResponseEntity<?> cadastro(@RequestBody Cliente obj) {
-		obj = cs.insert(obj);
+		obj = cs.inserir(obj);
 		Conta con = new Conta(obj);
 		obj.setConta(con);
 		con = cons.insert(con);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@PutMapping(path = "/alterar/{id}")
+	public ResponseEntity<Void> update(@RequestBody Cliente obj, @PathVariable int id){
+		obj.setId(id);
+		cs.atualizar(obj);
+		
+		return ResponseEntity.noContent().build();
 	}
 }
