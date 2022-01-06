@@ -44,6 +44,11 @@ public class ClienteService {
 		Optional<Cliente> obj = cr.search(cpf,senha); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Senha ou cpf invalido")); 
 	}
+	
+	public boolean verificarSenha(String senha) {
+		Optional<Cliente> obj = cr.searchForPass(senha);
+		return obj.isEmpty();
+	}
 	/*public Page<Cliente> buscarPagina(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pr = PageRequest.of(page,linesPerPage,Direction.valueOf(direction),orderBy);
 		return cr.findAll(pr);

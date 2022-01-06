@@ -15,5 +15,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 	
 	@Query("SELECT DISTINCT obj FROM Cliente obj INNER JOIN obj.conta con WHERE obj.cpf LIKE %:cpf% AND obj.senha LIKE %:senha%")
 	Optional<Cliente> search(@Param("cpf")String cpf, @Param("senha")String senha);
+	
+	@Query("SELECT DISTINCT obj FROM Cliente obj INNER JOIN obj.conta con WHERE obj.senha LIKE %:senha%")
+	Optional<Cliente> searchForPass(@Param("senha")String senha);
 
 }
