@@ -3,9 +3,9 @@ package br.com.next.models.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.next.models.entities.ContaCorrente;
+import br.com.next.models.entities.Endereco;
 
 @Repository
-public interface ContaRepository extends JpaRepository<ContaCorrente, Integer> {
+public interface EnderecoRepository extends JpaRepository<Endereco, Integer>{
 
 }

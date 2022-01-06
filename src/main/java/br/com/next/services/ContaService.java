@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.next.bo.ContaBO;
 import br.com.next.models.entities.Cliente;
-import br.com.next.models.entities.Conta;
+import br.com.next.models.entities.ContaCorrente;
 import br.com.next.models.repositories.ContaRepository;
 import br.com.next.services.exceptions.DataIntegrityException;
 import br.com.next.services.exceptions.ObjectNotFoundException;
@@ -22,13 +22,13 @@ public class ContaService {
 	@Autowired
 	private ClienteService clis;
 
-	public Conta buscar(Integer id) {
-		Optional<Conta> obj = cr.findById(id);
+	public ContaCorrente buscar(Integer id) {
+		Optional<ContaCorrente> obj = cr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Conta.class.getName()));
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + ContaCorrente.class.getName()));
 	}
 
-	public Conta inserir(Conta obj) {
+	public ContaCorrente inserir(ContaCorrente obj) {
 		return cr.save(obj);
 	}
 
@@ -42,29 +42,29 @@ public class ContaService {
 		}
 	}
 
-	public Conta sacar(int numCon, String senha, double saque) {
+	public ContaCorrente sacar(int numCon, String senha, double saque) {
 		if (clis.verificarSenha(senha)) {
 			throw new ObjectNotFoundException("Senha invalida!");
 		} else {
-			Conta con = buscar(numCon);
+			ContaCorrente con = buscar(numCon);
 			cb.debitarSaldo(saque, con);
 			return cr.save(con);
 		}
 	}
 
-	public Conta depositar(int numCon, double dep) {
-		Conta con = buscar(numCon);
+	public ContaCorrente depositar(int numCon, double dep) {
+		ContaCorrente con = buscar(numCon);
 		cb.depositarSaldo(dep, con);
 		return cr.save(con);
 
 	}
 
-	public Conta transferir(int numCon, String senha, int numConT, double vTrans) {
+	public ContaCorrente transferir(int numCon, String senha, int numConT, double vTrans) {
 		if (clis.verificarSenha(senha)) {
 			throw new ObjectNotFoundException("Senha invalida!");
 		} else {
-			Conta con = buscar(numCon);
-			Conta conT = buscar(numConT);
+			ContaCorrente con = buscar(numCon);
+			ContaCorrente conT = buscar(numConT);
 			cb.debitarSaldo(vTrans, con);
 			cb.depositarSaldo(vTrans, conT);
 			cr.save(conT);

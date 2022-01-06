@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.next.models.entities.Cliente;
-import br.com.next.models.entities.Conta;
+import br.com.next.models.entities.ContaCorrente;
 import br.com.next.models.repositories.ClienteRepository;
 import br.com.next.models.repositories.ContaRepository;
 //implements CommandLineRunner

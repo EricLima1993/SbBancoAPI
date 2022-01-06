@@ -14,16 +14,13 @@ import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import br.com.next.models.Conta;
+
 @Entity
 @Table(name = "TB_CONTA")
-public class Conta implements Serializable{
+public class ContaCorrente extends Conta implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@Column(name = "NUMERO_CONTA")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTA_SEQ")
-	@SequenceGenerator(name = "CONTA_SEQ", initialValue = 1, allocationSize = 1)
-	private int numeroConta;
 	
 	@Min(0)
 	@Column(name = "SALDO")
@@ -33,15 +30,19 @@ public class Conta implements Serializable{
 	@OneToOne(mappedBy = "conta")
 	private Cliente cliente;
 	
-	public Conta() {
+	public ContaCorrente() {
 		super();
 	}
 
-	public Conta(Cliente cli) {
+	public ContaCorrente(Cliente cli) {
 		super();
 		this.cliente = cli;
 	}
-
+	
+	@Id
+	@Column(name = "NUMERO_CONTA")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTA_SEQ")
+	@SequenceGenerator(name = "CONTA_SEQ", initialValue = 1, allocationSize = 1)
 	public int getNumeroConta() {
 		return numeroConta;
 	}
@@ -56,14 +57,6 @@ public class Conta implements Serializable{
 
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 
 }

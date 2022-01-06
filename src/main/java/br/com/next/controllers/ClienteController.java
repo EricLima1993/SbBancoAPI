@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.next.models.entities.Cliente;
-import br.com.next.models.entities.Conta;
+import br.com.next.models.entities.ContaCorrente;
+import br.com.next.models.entities.Endereco;
 import br.com.next.services.ClienteService;
 import br.com.next.services.ContaService;
+import br.com.next.services.EnderecoService;
 
 @RestController
 @RequestMapping("/principal")
@@ -28,6 +30,8 @@ public class ClienteController {
 	ClienteService cs;
 	@Autowired
 	ContaService cons;
+	@Autowired
+	EnderecoService es;
 
 	@GetMapping(path = "/buscar")
 	public ResponseEntity<?> buscar(@RequestParam int id) {
@@ -36,11 +40,17 @@ public class ClienteController {
 	}
 
 	@PostMapping(path = "/cadastrar")
-	public ResponseEntity<?> cadastro(@RequestBody Cliente obj) {
+	public ResponseEntity<?> cadastro(@RequestBody Cliente obj) {	
+		Endereco en = obj.getEndereco();
+		obj.setEndereco(null);
 		obj = cs.inserir(obj);
-		Conta con = new Conta(obj);
+		ContaCorrente con = new ContaCorrente(obj);
+		en.setCliente(obj);
+		
 		obj.setConta(con);
 		con = cons.inserir(con);
+		obj.setEndereco(en);	
+		en = es.inserir(en);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
@@ -49,6 +59,10 @@ public class ClienteController {
 	public ResponseEntity<Void> update(@RequestBody Cliente obj, @PathVariable int id){
 		obj.setId(id);
 		cs.atualizar(obj);
+		
+		Endereco endereco = obj.getEndereco();
+		
+		es.atualizar(endereco);
 		
 		return ResponseEntity.noContent().build();
 	}

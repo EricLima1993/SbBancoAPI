@@ -1,11 +1,11 @@
 package br.com.next.bo;
 
 import br.com.next.bo.exceptions.SaldoInsuficienteException;
-import br.com.next.models.entities.Conta;
+import br.com.next.models.entities.ContaCorrente;
 
 public class ContaBO {
 	
-	public boolean verificarSaldo(double saque, Conta con) {
+	public boolean verificarSaldo(double saque, ContaCorrente con) {
 		if(con.getSaldo() < saque) {
 			throw new SaldoInsuficienteException("Saldo insuficiente!");
 		}
@@ -13,14 +13,14 @@ public class ContaBO {
 		return true;
 	}
 	
-	public Conta debitarSaldo(double saque, Conta con) {
+	public ContaCorrente debitarSaldo(double saque, ContaCorrente con) {
 		if(verificarSaldo(saque, con)) {
 			con.setSaldo(con.getSaldo() - saque);
 		}
 		return con;
 	}
 
-	public Conta depositarSaldo(double dep, Conta con) {
+	public ContaCorrente depositarSaldo(double dep, ContaCorrente con) {
 		con.setSaldo(con.getSaldo() + dep);
 		
 		return con;

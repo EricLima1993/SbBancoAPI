@@ -3,9 +3,6 @@ package br.com.next.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.next.enums.TipoCliente;
@@ -18,6 +15,9 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository cr;
+	
+	@Autowired
+	private EnderecoService es;
 
 	public Cliente buscar(Integer id) { 
 		Optional<Cliente> obj = cr.findById(id); 
@@ -26,7 +26,8 @@ public class ClienteService {
 	}
 	
 	public Cliente inserir(Cliente obj) {
-			obj.setTipo(TipoCliente.COMUM.toString());		
+			obj.setTipo(TipoCliente.COMUM.toString());
+			
 			return cr.save(obj);	
 	}
 	
