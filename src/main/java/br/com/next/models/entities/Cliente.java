@@ -1,6 +1,7 @@
 package br.com.next.models.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -55,6 +57,14 @@ public class Cliente implements Serializable {
 		inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
 	)
 	private Endereco endereco; 
+	
+	@JsonManagedReference
+	@OneToMany
+	@JoinTable(name = "CLIENTE_CARTAO",
+		joinColumns = @JoinColumn(name = "ID"),
+		inverseJoinColumns = @JoinColumn(name = "ID_CARTAO")
+	)
+	private List<CartaoCredito> cartoes; 
 	
 	public Cliente() {
 		super();
@@ -128,4 +138,13 @@ public class Cliente implements Serializable {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+
+	public List<CartaoCredito> getCartoes() {
+		return cartoes;
+	}
+
+	public void setCartoes(List<CartaoCredito> cartoes) {
+		this.cartoes = cartoes;
+	}
+	
 }

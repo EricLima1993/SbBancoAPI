@@ -1,5 +1,14 @@
 package br.com.next.models;
 
-public class Cartao {
+import java.sql.Date;
 
+public class Cartao {
+	
+	protected int id;
+	protected String numero;
+	protected String nomeCartao;
+	protected Date validade;
+	protected String codigoSeguranca;
+	protected String senha;
+	
 }
