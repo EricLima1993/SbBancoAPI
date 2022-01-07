@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,5 +42,19 @@ public class CartaoController {
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@PutMapping(path="/usar")
+	public ResponseEntity<Void> sacar(@RequestBody CartaoCredito obj, @RequestParam double valor) {
+		cs.usar(obj,valor);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping(path="/pagar")
+	public ResponseEntity<Void> pagar(@RequestBody CartaoCredito obj, @RequestParam double valor) {
+		cs.pagar(obj,valor);
+		
+		return ResponseEntity.noContent().build();
 	}
 }

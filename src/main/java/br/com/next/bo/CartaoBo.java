@@ -2,7 +2,9 @@ package br.com.next.bo;
 
 import java.util.Random;
 
+import br.com.next.bo.exceptions.SaldoInsuficienteException;
 import br.com.next.models.entities.CartaoCredito;
+import br.com.next.models.entities.ContaCorrente;
 
 public class CartaoBo {
 	
@@ -96,5 +98,35 @@ public class CartaoBo {
 		}
 		
 		return obj.getNumero()+numFinal;
+	}
+
+	public CartaoCredito debitarCredito(CartaoCredito obj, double valor) {
+		if(verificarCredito(valor, obj)) {
+			obj.setLimite(obj.getLimite() - valor);
+		}
+		return obj;
+	}
+	
+	public boolean verificarCredito(double valor, CartaoCredito cartao) {
+		if(cartao.getLimite() < valor) {
+			throw new SaldoInsuficienteException("Credito insuficiente!");
+		}
+		
+		return true;
+	}
+
+	public CartaoCredito pagarCredito(CartaoCredito cartao, double valor) {
+		if(verificarDivida(valor, cartao)) {
+			cartao.setLimite(cartao.getLimite() + valor);
+		}
+
+		return cartao;
+	}
+
+	private boolean verificarDivida(double valor, CartaoCredito cartao) {
+		if((cartao.getLimiteMax()-cartao.getLimite()) < valor) {
+			throw new SaldoInsuficienteException("sua fatura é menor!");
+		}
+		return true;
 	}
 }
