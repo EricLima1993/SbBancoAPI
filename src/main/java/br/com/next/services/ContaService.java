@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.com.next.bo.ContaBO;
+import br.com.next.bo.ContaBo;
 import br.com.next.models.entities.Cliente;
 import br.com.next.models.entities.ContaCorrente;
 import br.com.next.models.repositories.ContaRepository;
@@ -18,7 +18,7 @@ public class ContaService {
 
 	@Autowired
 	private ContaRepository cr;
-	private ContaBO cb = new ContaBO();
+	private ContaBo cb = new ContaBo();
 	@Autowired
 	private ClienteService clis;
 

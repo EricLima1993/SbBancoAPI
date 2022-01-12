@@ -3,7 +3,7 @@ package br.com.next.bo;
 import br.com.next.bo.exceptions.SaldoInsuficienteException;
 import br.com.next.models.entities.ContaCorrente;
 
-public class ContaBO {
+public class ContaBo {
 	
 	public boolean verificarSaldo(double saque, ContaCorrente con) {
 		if(con.getSaldo() < saque) {
