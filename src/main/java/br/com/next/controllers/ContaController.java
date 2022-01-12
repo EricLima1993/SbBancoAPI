@@ -46,6 +46,14 @@ public class ContaController {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PutMapping(path="/cartaodeb")
+	public ResponseEntity<Void> usarCartaoDebito(@RequestParam int id,@RequestParam int numCon,@RequestParam String senha, @RequestParam double uso) {
+		cs.sacar(numCon, senha, uso);	
+		
+		atualizarTipo(id);
+		return ResponseEntity.noContent().build();
+	}
+	
 	public void atualizarTipo(int id) {
 		Cliente cli = new Cliente();
 		

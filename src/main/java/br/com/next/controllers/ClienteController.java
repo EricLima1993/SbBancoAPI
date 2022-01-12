@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.next.bo.CartaoBo;
+import br.com.next.models.entities.CartaoDebito;
 import br.com.next.models.entities.Cliente;
 import br.com.next.models.entities.ContaCorrente;
 import br.com.next.models.entities.Endereco;
+import br.com.next.services.CartaoDebService;
 import br.com.next.services.ClienteService;
 import br.com.next.services.ContaService;
 import br.com.next.services.EnderecoService;
@@ -32,6 +35,11 @@ public class ClienteController {
 	ContaService cons;
 	@Autowired
 	EnderecoService es;
+	
+	@Autowired
+	CartaoDebService cds;
+	
+	CartaoBo cb = new CartaoBo();
 
 	@GetMapping(path = "/buscar")
 	public ResponseEntity<?> buscar(@RequestParam int id) {
@@ -42,15 +50,28 @@ public class ClienteController {
 	@PostMapping(path = "/cadastrar")
 	public ResponseEntity<?> cadastro(@RequestBody Cliente obj) {	
 		Endereco en = obj.getEndereco();
+		CartaoDebito cd = new CartaoDebito();
+		cd.setNomeCartao(obj.getNome());
+		cd.setSenha(obj.getSenha());
+		
 		obj.setEndereco(null);
 		obj = cs.inserir(obj);
 		ContaCorrente con = new ContaCorrente(obj);
 		en.setCliente(obj);
 		
+		cd.setCliente(obj);
+		
+		
 		obj.setConta(con);
 		con = cons.inserir(con);
+		
 		obj.setEndereco(en);	
 		en = es.inserir(en);
+		
+		obj.setCardDeb(cd);
+		cd = cds.inserir(cd);
+		cd = cb.criacaoCartaoDebito(cd);
+		cd = cds.inserir(cd);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}

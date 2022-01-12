@@ -51,6 +51,16 @@ public class ContaService {
 			return cr.save(con);
 		}
 	}
+	
+	public ContaCorrente usarDebito(int numCon, String senha, double saque) {
+		if (clis.verificarSenha(senha)) {
+			throw new ObjectNotFoundException("Senha invalida!");
+		} else {
+			ContaCorrente con = buscar(numCon);
+			cb.debitarSaldo(saque, con);
+			return cr.save(con);
+		}
+	}
 
 	public ContaCorrente depositar(int numCon, double dep) {
 		ContaCorrente con = buscar(numCon);

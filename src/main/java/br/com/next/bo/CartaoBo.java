@@ -4,7 +4,7 @@ import java.util.Random;
 
 import br.com.next.bo.exceptions.SaldoInsuficienteException;
 import br.com.next.models.entities.CartaoCredito;
-import br.com.next.models.entities.ContaCorrente;
+import br.com.next.models.entities.CartaoDebito;
 
 public class CartaoBo {
 	
@@ -128,5 +128,35 @@ public class CartaoBo {
 			throw new SaldoInsuficienteException("sua fatura é menor!");
 		}
 		return true;
+	}
+	
+	public CartaoDebito criacaoCartaoDebito(CartaoDebito obj) {
+		String nmrcartao = "0123456789";
+		Random rng = new Random();
+
+		char[] text = new char[12];
+		for (int i = 0; i < 12; i++) {
+			text[i] = nmrcartao.charAt(rng.nextInt(nmrcartao.length()));
+		}
+		obj.setNumero((new String(text))+digitosFinaisD(obj));
+		obj.setCodigoSeguranca(gerarCodigo());
+		return obj ;
+	}
+	
+	public String digitosFinaisD(CartaoDebito obj) {
+		String numFinal;
+		int num = obj.getId();
+		
+		if(num <= 9) {
+			numFinal = "000"+num;
+		}else if(num <= 99) {
+			numFinal = "00"+num;
+		}else if(num <= 999){
+			numFinal = "0"+num;
+		}else {
+			numFinal = String.valueOf(num);
+		}
+		
+		return numFinal;
 	}
 }

@@ -27,7 +27,7 @@ public class CartaoService {
 	public CartaoCredito buscar(Integer id) { 
 		Optional<CartaoCredito> obj = cr.findById(id); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException( 
-				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName())); 
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + CartaoCredito.class.getName())); 
 	}
 	
 	public CartaoCredito inserir(CartaoCredito obj) {

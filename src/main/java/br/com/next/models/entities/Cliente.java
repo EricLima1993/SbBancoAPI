@@ -66,6 +66,14 @@ public class Cliente implements Serializable {
 	)
 	private List<CartaoCredito> cartoes; 
 	
+	@JsonManagedReference
+	@OneToOne
+	@JoinTable(name = "CLIENTE_CARTAO_DEB",
+		joinColumns = @JoinColumn(name = "ID"),
+		inverseJoinColumns = @JoinColumn(name = "NUMERO_CONTA")
+	)
+	private CartaoDebito cardDeb;
+	
 	public Cliente() {
 		super();
 	}
@@ -146,5 +154,13 @@ public class Cliente implements Serializable {
 	public void setCartoes(List<CartaoCredito> cartoes) {
 		this.cartoes = cartoes;
 	}
-	
+
+	public CartaoDebito getCardDeb() {
+		return cardDeb;
+	}
+
+	public void setCardDeb(CartaoDebito cardDeb) {
+		this.cardDeb = cardDeb;
+	}
+
 }
