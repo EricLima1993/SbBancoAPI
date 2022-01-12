@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.next.bo.ClienteBo;
 import br.com.next.bo.PixBo;
 import br.com.next.models.entities.Cliente;
 import br.com.next.models.entities.Pix;
@@ -58,8 +59,18 @@ public class PixController {
 		cliP = cs.buscar(idPagante);
 		
 		cons.transferir(cliP.getConta().getNumeroConta(),cliP.getSenha(),cliR.getConta().getNumeroConta(),p.getValor());
-		
+
 		ps.deletar(p.getId());
+		
+		cliR = cs.buscar(p.getIdRecebe());
+		cliP = cs.buscar(idPagante);
+		
+		cliR.setTipo(ClienteBo.verificarTipo(cliR.getConta().getSaldo()).toString());
+		cliP.setTipo(ClienteBo.verificarTipo(cliP.getConta().getSaldo()).toString());
+		
+		cs.atualizar(cliR);
+		cs.atualizar(cliP);
+		
 		return ResponseEntity.noContent().build();
 	}
 	

@@ -1,6 +1,7 @@
 package br.com.next.bo;
 
 import br.com.next.bo.exceptions.SaldoInsuficienteException;
+import br.com.next.enums.TipoCliente;
 import br.com.next.models.entities.ContaCorrente;
 
 public class ContaBo {
@@ -25,4 +26,5 @@ public class ContaBo {
 		
 		return con;
 	}
+
 }
