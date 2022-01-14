@@ -52,6 +52,14 @@ public class Cliente implements Serializable {
 	
 	@JsonManagedReference
 	@OneToOne
+	@JoinTable(name = "CLIENTE_CONTAP",
+		joinColumns = @JoinColumn(name = "ID"),
+		inverseJoinColumns = @JoinColumn(name = "NUMERO_CONTA")
+	)
+	private ContaPoupanca contaP;
+	
+	@JsonManagedReference
+	@OneToOne
 	@JoinTable(name = "CLIENTE_ENDERECO",
 		joinColumns = @JoinColumn(name = "ID"),
 		inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
@@ -161,6 +169,14 @@ public class Cliente implements Serializable {
 
 	public void setCardDeb(CartaoDebito cardDeb) {
 		this.cardDeb = cardDeb;
+	}
+
+	public ContaPoupanca getContaP() {
+		return contaP;
+	}
+
+	public void setContaP(ContaPoupanca contaP) {
+		this.contaP = contaP;
 	}
 
 }
