@@ -38,11 +38,10 @@ public class ContaController {
 	}
 	
 	@PutMapping(path="/transferir")
-	public ResponseEntity<Void> transferir(@RequestParam int idP,@RequestParam int id, @RequestParam int numCon,@RequestParam String senha, @RequestParam int numConT, @RequestParam double vTrans) {
+	public ResponseEntity<Void> transferir(@RequestParam int idP, @RequestParam int numCon,@RequestParam String senha, @RequestParam int numConT, @RequestParam double vTrans) {
 		cs.transferir(numCon,senha,numConT,vTrans);
 		
 		atualizarTipo(idP);
-		atualizarTipo(id);
 		return ResponseEntity.noContent().build();
 	}
 	

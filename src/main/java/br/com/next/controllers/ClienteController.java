@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.next.bo.CartaoBo;
+import br.com.next.bo.ClienteBo;
 import br.com.next.models.entities.CartaoDebito;
 import br.com.next.models.entities.Cliente;
 import br.com.next.models.entities.ContaCorrente;
@@ -99,6 +100,18 @@ public class ClienteController {
 	@GetMapping(path = "/login")
 	public ResponseEntity<?> login(@RequestParam String cpf, String senha) {
 		Cliente obj = cs.logar(cpf, senha);
+		System.out.println(obj.getNome()+" - "+obj.getConta().getSaldo());
+		atualizarTipo(obj.getId());
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	public void atualizarTipo(int id) {
+		Cliente cli = new Cliente();
+		
+		cli = cs.buscar(id);
+		
+		cli.setTipo(ClienteBo.verificarTipo(cli.getConta().getSaldo()).toString());
+		
+		cs.atualizar(cli);
 	}
 }
