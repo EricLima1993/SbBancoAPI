@@ -4,6 +4,8 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +16,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.next.bo.CartaoBo;
 import br.com.next.models.entities.CartaoCredito;
+import br.com.next.models.entities.Cliente;
 import br.com.next.services.CartaoService;
 import br.com.next.services.ClienteService;
-import br.com.next.models.entities.Cliente;
+import br.com.next.services.ContaService;
 
 @RestController
 @RequestMapping("/cartoes")
@@ -26,7 +29,10 @@ public class CartaoController {
 	ClienteService clis;
 	@Autowired
 	CartaoService cs;
+	@Autowired
+	ContaService conS;
 	CartaoBo cb = new CartaoBo();
+
 	
 	@PostMapping(path = "/solicitacao")
 	public ResponseEntity<?> criar(@RequestBody CartaoCredito obj,@RequestParam int id,@RequestParam String bandeira){
@@ -52,9 +58,26 @@ public class CartaoController {
 	}
 	
 	@PutMapping(path="/pagar")
-	public ResponseEntity<Void> pagar(@RequestBody CartaoCredito obj, @RequestParam double valor) {
+	public ResponseEntity<Void> pagar(@RequestBody CartaoCredito obj,@RequestParam int id, @RequestParam double valor) {
+		Cliente c = clis.buscar(id);
+		
+		conS.sacar(c.getConta().getNumeroConta(), c.getSenha(), valor);
+		
 		cs.pagar(obj,valor);
 		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping(path = "/cancelar/{id}")
+	public ResponseEntity<Void> deletar(@PathVariable int id,@RequestParam int idC) {
+		Cliente cli = clis.buscar(idC);
+		CartaoCredito cc = cs.buscar(id);
+		
+		
+		cli.getCartoes().remove(cc);
+		clis.atualizar(cli);
+		
+		cs.deletar(id);
 		return ResponseEntity.noContent().build();
 	}
 }

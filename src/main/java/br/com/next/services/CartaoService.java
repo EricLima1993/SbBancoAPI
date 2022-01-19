@@ -59,4 +59,8 @@ public class CartaoService {
 
 		return cr.save(obj);
 	}
+	
+	public void deletar(Integer id) { 
+		cr.deleteById(id);
+	}
 }
