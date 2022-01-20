@@ -31,16 +31,6 @@ public class ContaPoupancaService {
 		return cpr.save(obj);
 	}
 
-	public void deletar(Integer id) {
-		buscar(id);
-		try {
-			cpr.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException(
-					"Não é possivel excluir um conta que sem excluir o cadastro do cliente primeiro");
-		}
-	}
-
 	public ContaPoupanca sacar(int numCon, String senha, double saque) {
 		if (clis.verificarSenha(senha)) {
 			throw new ObjectNotFoundException("Senha invalida!");
@@ -69,5 +59,9 @@ public class ContaPoupancaService {
 			cpr.save(conT);
 			return cpr.save(con);
 		}
+	}
+	
+	public void deletar(Integer id) { 
+		cpr.deleteById(id);
 	}
 }
