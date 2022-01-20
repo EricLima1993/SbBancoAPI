@@ -45,16 +45,16 @@ public class PixController {
 		ps.inserir(p);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(p.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.ok().body(p);
 	}
 	
 	@PutMapping(path = "/pagar")
-	public ResponseEntity<?> pagar(@RequestParam int idPix, @RequestParam int idPagante){
+	public ResponseEntity<?> pagar(@RequestParam String codigo, @RequestParam int idPagante){
 		Cliente cliP = new Cliente();
 		Cliente cliR = new Cliente();
 		Pix p = new Pix();
 		
-		p = ps.buscar(idPix);
+		p = ps.buscarPorCodigo(codigo);
 		cliR = cs.buscar(p.getIdRecebe());
 		cliP = cs.buscar(idPagante);
 		

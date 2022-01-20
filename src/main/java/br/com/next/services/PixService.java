@@ -21,6 +21,12 @@ public class PixService {
 				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Pix.class.getName())); 
 	}
 	
+	public Pix buscarPorCodigo(String codigo) { 
+		Optional<Pix> obj = pr.searchForCode(codigo); 
+		return obj.orElseThrow(() -> new ObjectNotFoundException( 
+				 "Objeto não encontrado! codigo: " + codigo + ", Tipo: " + Pix.class.getName())); 
+	}
+	
 	public Pix inserir(Pix obj) {
 		return pr.save(obj);
 	}

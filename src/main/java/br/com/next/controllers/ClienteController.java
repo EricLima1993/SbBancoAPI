@@ -100,7 +100,6 @@ public class ClienteController {
 	@GetMapping(path = "/login")
 	public ResponseEntity<?> login(@RequestParam String cpf, String senha) {
 		Cliente obj = cs.logar(cpf, senha);
-		System.out.println(obj.getNome()+" - "+obj.getConta().getSaldo());
 		atualizarTipo(obj.getId());
 		return ResponseEntity.ok().body(obj);
 	}
