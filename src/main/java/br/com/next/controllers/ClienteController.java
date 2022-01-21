@@ -1,6 +1,7 @@
 package br.com.next.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.next.bo.CartaoBo;
 import br.com.next.bo.ClienteBo;
+import br.com.next.models.entities.CartaoCredito;
 import br.com.next.models.entities.CartaoDebito;
 import br.com.next.models.entities.Cliente;
 import br.com.next.models.entities.ContaCorrente;
 import br.com.next.models.entities.Endereco;
 import br.com.next.services.CartaoDebService;
+import br.com.next.services.CartaoService;
 import br.com.next.services.ClienteService;
+import br.com.next.services.ContaPoupancaService;
 import br.com.next.services.ContaService;
 import br.com.next.services.EnderecoService;
 
@@ -36,9 +40,12 @@ public class ClienteController {
 	ContaService cons;
 	@Autowired
 	EnderecoService es;
-	
 	@Autowired
 	CartaoDebService cds;
+	@Autowired
+	ContaPoupancaService cps;
+	@Autowired
+	CartaoService ccs;
 	
 	CartaoBo cb = new CartaoBo();
 
@@ -94,6 +101,22 @@ public class ClienteController {
 		Cliente cli = cs.buscar(id);
 		cs.deletar(id);
 		cons.deletar(cli.getConta().getNumeroConta());
+		if(cli.getEndereco() != null) {
+			es.deletar(cli.getEndereco().getId());
+		}
+		if(cli.getCardDeb() != null) {
+			cds.deletar(cli.getCardDeb().getId());
+		}
+		if(cli.getContaP() != null) {
+			cps.deletar(cli.getContaP().getNumeroConta());
+		}
+		
+		List<CartaoCredito> cartoes = cli.getCartoes();
+		
+		for(CartaoCredito cartao: cartoes) {
+			ccs.deletar(cartao.getId());
+		}
+		
 		return ResponseEntity.noContent().build();
 	}
 	

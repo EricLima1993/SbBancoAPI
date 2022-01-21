@@ -24,4 +24,8 @@ public class CartaoDebService {
 	public CartaoDebito inserir(CartaoDebito obj) {
 		return cdr.save(obj);	
 	}
+	
+	public void deletar(Integer id) { 
+		cdr.deleteById(id);
+	}
 }

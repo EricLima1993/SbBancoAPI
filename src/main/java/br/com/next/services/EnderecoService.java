@@ -29,4 +29,8 @@ public class EnderecoService {
 		buscar(obj.getId());
 		return er.save(obj);
 	}
+	
+	public void deletar(Integer id) { 
+		er.deleteById(id);
+	}
 }

@@ -67,7 +67,7 @@ public class Cliente implements Serializable {
 	private Endereco endereco; 
 	
 	@JsonManagedReference
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "CLIENTE_CARTAO",
 		joinColumns = @JoinColumn(name = "ID"),
 		inverseJoinColumns = @JoinColumn(name = "ID_CARTAO")
