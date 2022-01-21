@@ -82,6 +82,9 @@ public class Cliente implements Serializable {
 	)
 	private CartaoDebito cardDeb;
 	
+	@Column(name = "CHAVE")
+	private String chave;
+	
 	public Cliente() {
 		super();
 	}

@@ -7,8 +7,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.next.bo.ContaBo;
+import br.com.next.bo.ContaPoupancaBo;
 import br.com.next.models.entities.Cliente;
 import br.com.next.models.entities.ContaCorrente;
+import br.com.next.models.entities.ContaPoupanca;
+import br.com.next.models.repositories.ContaPoupancaRepository;
 import br.com.next.models.repositories.ContaRepository;
 import br.com.next.services.exceptions.DataIntegrityException;
 import br.com.next.services.exceptions.ObjectNotFoundException;
@@ -21,11 +24,19 @@ public class ContaService {
 	private ContaBo cb = new ContaBo();
 	@Autowired
 	private ClienteService clis;
+	@Autowired
+	private ContaPoupancaRepository cpr;
+	private ContaPoupancaBo cpb = new ContaPoupancaBo();
 
 	public ContaCorrente buscar(Integer id) {
 		Optional<ContaCorrente> obj = cr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + ContaCorrente.class.getName()));
+	}
+	public ContaPoupanca buscarPoupanca(Integer id) {
+		Optional<ContaPoupanca> obj = cpr.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + ContaPoupanca.class.getName()));
 	}
 
 	public ContaCorrente inserir(ContaCorrente obj) {
@@ -80,5 +91,42 @@ public class ContaService {
 			cr.save(conT);
 			return cr.save(con);
 		}
+	}
+	
+	public ContaCorrente transferirPoupanca(int numCon, String senha, int numConT, double vTrans) {
+		if (clis.verificarSenha(senha)) {
+			throw new ObjectNotFoundException("Senha invalida!");
+		} else {
+			ContaCorrente con = buscar(numCon);
+			ContaPoupanca conT = buscarPoupanca(numConT);
+			cb.debitarSaldo(vTrans, con);
+			cpb.depositarSaldo(vTrans, conT);
+			atualizarPoupanca(conT);
+			return cr.save(con);
+		}
+	}
+	
+	public ContaCorrente transferirPix(String chave, String senha, int numConT, double vTrans) {
+		if (clis.verificarSenha(senha)) {
+			throw new ObjectNotFoundException("Senha invalida!");
+		} else {
+			Cliente cli = clis.buscarChave(chave);
+			ContaCorrente con = buscar(numConT);
+			ContaCorrente conT = cli.getConta();
+			cb.debitarSaldo(vTrans, con);
+			cb.depositarSaldo(vTrans, conT);
+			cr.save(conT);
+			return cr.save(con);
+		}
+	}
+	
+	public ContaCorrente atualizar(ContaCorrente obj) {
+		buscar(obj.getNumeroConta());
+		return cr.save(obj);
+	}
+	
+	public ContaPoupanca atualizarPoupanca(ContaPoupanca obj) {
+		buscar(obj.getNumeroConta());
+		return cpr.save(obj);
 	}
 }

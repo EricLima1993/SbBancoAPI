@@ -33,7 +33,7 @@ public class ContaPoupancaController {
 		Cliente cli = clis.buscar(id);
 		
 		ContaPoupanca obj = new ContaPoupanca(cli);
-		cli.setContaP(obj);
+		cli.setContaP(obj);	
 		cps.inserir(obj);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getNumeroConta()).toUri();
@@ -58,6 +58,13 @@ public class ContaPoupancaController {
 	@PutMapping(path="/transferir")
 	public ResponseEntity<Void> transferir(@RequestParam int idP,@RequestParam int id, @RequestParam int numCon,@RequestParam String senha, @RequestParam int numConT, @RequestParam double vTrans) {
 		cps.transferir(numCon,senha,numConT,vTrans);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping(path="/transferircorrente")
+	public ResponseEntity<Void> transferirCorrente(@RequestParam int idP, @RequestParam int numCon,@RequestParam String senha, @RequestParam int numConT, @RequestParam double vTrans) {
+		cps.transferirCorrente(numCon,senha,numConT,vTrans);
 		
 		return ResponseEntity.noContent().build();
 	}

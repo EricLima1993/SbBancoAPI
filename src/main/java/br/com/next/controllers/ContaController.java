@@ -63,4 +63,20 @@ public class ContaController {
 		clis.atualizar(cli);
 	}
 	
+	@PutMapping(path="/transferirpoupanca")
+	public ResponseEntity<Void> transferirPoupanca(@RequestParam int idP, @RequestParam int numCon,@RequestParam String senha, @RequestParam int numConT, @RequestParam double vTrans) {
+		cs.transferirPoupanca(numCon,senha,numConT,vTrans);
+		
+		atualizarTipo(idP);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping(path="/transferirpix")
+	public ResponseEntity<Void> transferirPix(@RequestParam int idP, @RequestParam String chave,@RequestParam String senha, @RequestParam int numConT, @RequestParam double vTrans) {
+		cs.transferirPix(chave,senha,numConT,vTrans);
+		
+		atualizarTipo(idP);
+		return ResponseEntity.noContent().build();
+	}
+	
 }

@@ -47,6 +47,13 @@ public class ClienteService {
 		Optional<Cliente> obj = cr.searchForPass(senha);
 		return obj.isEmpty();
 	}
+	
+	public Cliente buscarChave(String chave) { 
+		Optional<Cliente> obj = cr.searchForKey(chave); 
+		return obj.orElseThrow(() -> new ObjectNotFoundException( 
+				 "Objeto não encontrado! Id: " + chave + ", Tipo: " + Cliente.class.getName())); 
+	}
+	
 	/*public Page<Cliente> buscarPagina(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pr = PageRequest.of(page,linesPerPage,Direction.valueOf(direction),orderBy);
 		return cr.findAll(pr);
