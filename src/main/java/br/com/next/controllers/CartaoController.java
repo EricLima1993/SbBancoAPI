@@ -1,6 +1,10 @@
 package br.com.next.controllers;
 
 import java.net.URI;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,15 +40,41 @@ public class CartaoController {
 	
 	@PostMapping(path = "/solicitacao")
 	public ResponseEntity<?> criar(@RequestBody CartaoCredito obj,@RequestParam int id,@RequestParam String bandeira){
-		Cliente cli = clis.buscar(id);
-		cli.getCartoes().add(obj);
-		obj.setCliente(cli);
-		
-		obj = cs.inserir(obj);
+		double totalPagar = 0;
+		if(obj.getAnosContratacaoApolice() > 0) {
+			if(obj.isSeguroMorte() == true) {
+				totalPagar += (36*obj.getAnosContratacaoApolice());
+			}
+			if(obj.isSeguroInvalidez() == true) {
+				totalPagar += (26*obj.getAnosContratacaoApolice());
+			}
+			if(obj.isSeguroDesemprego() == true){
+				totalPagar += (16*obj.getAnosContratacaoApolice());
+			}
+			Cliente cli = clis.buscar(id);
+			conS.sacar(cli.getConta().getNumeroConta(), cli.getSenha(), totalPagar);
+			LocalDate dtm = LocalDate.now();  
+			obj.setDataApolice(Date.valueOf(dtm));
+			cli.getCartoes().add(obj);
+			obj.setCliente(cli);
+			
+			obj = cs.inserir(obj);
 
-		cb.verificar(obj, bandeira);
-		
-		obj = cs.atualizar(obj);
+			cb.verificar(obj, bandeira);
+			
+			obj = cs.atualizar(obj);
+			
+		}else {
+			Cliente cli = clis.buscar(id);
+			cli.getCartoes().add(obj);
+			obj.setCliente(cli);
+			
+			obj = cs.inserir(obj);
+
+			cb.verificar(obj, bandeira);
+			
+			obj = cs.atualizar(obj);
+		}
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();

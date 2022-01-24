@@ -42,6 +42,9 @@ public class Cliente implements Serializable {
 	@Column(name = "TIPO_CONTA")
 	private String tipo;
 	
+	@Column(name = "CHAVE")
+	private String chave;
+	
 	@JsonManagedReference
 	@OneToOne
 	@JoinTable(name = "CLIENTE_CONTA",
@@ -81,9 +84,6 @@ public class Cliente implements Serializable {
 		inverseJoinColumns = @JoinColumn(name = "NUMERO_CONTA")
 	)
 	private CartaoDebito cardDeb;
-	
-	@Column(name = "CHAVE")
-	private String chave;
 	
 	public Cliente() {
 		super();
@@ -180,6 +180,14 @@ public class Cliente implements Serializable {
 
 	public void setContaP(ContaPoupanca contaP) {
 		this.contaP = contaP;
+	}
+
+	public String getChave() {
+		return chave;
+	}
+
+	public void setChave(String chave) {
+		this.chave = chave;
 	}
 
 }

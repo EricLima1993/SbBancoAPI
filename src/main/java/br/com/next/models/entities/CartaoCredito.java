@@ -32,6 +32,16 @@ public class CartaoCredito extends Cartao implements Serializable {
 	@Column(name = "LIMITE")
 	private double limite;
 	
+	private Date dataApolice;
+	
+	private int anosContratacaoApolice;
+	
+	private boolean seguroMorte;
+	
+	private boolean seguroInvalidez;
+	
+	private boolean seguroDesemprego;
+	
 	@JsonBackReference
 	@OneToOne(mappedBy = "cartoes")
 	private Cliente cliente;
@@ -106,6 +116,46 @@ public class CartaoCredito extends Cartao implements Serializable {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public Date getDataApolice() {
+		return dataApolice;
+	}
+
+	public void setDataApolice(Date dataApolice) {
+		this.dataApolice = dataApolice;
+	}
+
+	public int getAnosContratacaoApolice() {
+		return anosContratacaoApolice;
+	}
+
+	public void setAnosContratacaoApolice(int anosContratacaoApolice) {
+		this.anosContratacaoApolice = anosContratacaoApolice;
+	}
+
+	public boolean isSeguroMorte() {
+		return seguroMorte;
+	}
+
+	public void setSeguroMorte(boolean seguroMorte) {
+		this.seguroMorte = seguroMorte;
+	}
+
+	public boolean isSeguroInvalidez() {
+		return seguroInvalidez;
+	}
+
+	public void setSeguroInvalidez(boolean seguroInvalidez) {
+		this.seguroInvalidez = seguroInvalidez;
+	}
+
+	public boolean isSeguroDesemprego() {
+		return seguroDesemprego;
+	}
+
+	public void setSeguroDesemprego(boolean seguroDesemprego) {
+		this.seguroDesemprego = seguroDesemprego;
 	}
 
 }
